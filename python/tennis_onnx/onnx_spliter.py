@@ -140,7 +140,7 @@ def get_spliter():
         {"#op": "concat",
          "dim": NE(0)}
     ]))
-    # gs.support("sub")
+    gs.support("sub")
     # gs.support(if_no_broadcast_reduce("sub"))
     # gs.support(MetaGraph([
     #     {"#op": ts.Node.Const, "value": EQ(0)},
@@ -167,7 +167,7 @@ def get_spliter():
     gs.route("_reshape")
     gs.route("_reshape_v2")
     gs.support("gemm")
-    # gs.support("_dimshuffle")
+    gs.support("_dimshuffle")
     gs.support("global_pooling2d")
     gs.support("sigmoid")
     gs.support(MetaGraph([
@@ -187,4 +187,5 @@ def get_spliter():
     gs.route(infered_flatten)
     gs.support("prelu")
     gs.support("sample2d")
+    gs.support("shape_index_patch")
     return gs

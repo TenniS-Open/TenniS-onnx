@@ -2001,3 +2001,22 @@ def convert_prelu(node, cache):
 
 
 register_node_converter("onnx::prelu", convert_prelu)
+
+
+def convert_shape_index_patch(node, cache):
+    # type: (ts.Node, Dict[ts.Node, onnx.NodeProto]) -> onnx.NodeProto
+    x = node.inputs[0].name
+    pos = node.inputs[1].name
+
+    origin = list(map(int, node.get("origin")))
+    origin_patch = list(map(int, node.get("origin_patch")))
+
+    onp = onnx.helper.make_node("ATen", [x, pos], [node.name], name=node.name,
+                                origin=origin, origin_patch=origin_patch)
+    assert isinstance(onp, onnx.NodeProto)
+    onp.attribute.append(onnx.helper.make_attribute("op_type", "shape_index_patch"))
+
+    return onp
+
+
+register_node_converter("shape_index_patch", convert_shape_index_patch)
